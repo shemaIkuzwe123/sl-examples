@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <h2>Create a poll</h2>
+  <form method="post" action="{{ url_for('create_poll') }}" class="stack">
+    <input name="question" placeholder="Question (e.g. Tabs or spaces?)" maxlength="200" required />
+    <textarea name="options" rows="4" placeholder="Options — one per line&#10;Tabs&#10;Spaces" required></textarea>
+    <button type="submit">Create poll</button>
+  </form>
+</section>
+
+<section class="poll-list">
+  {% for poll in all_polls %}
+    <a class="poll-item" href="{{ url_for('show_poll', poll_id=poll.id) }}">
+      <span class="question">{{ poll.question }}</span>
+      <span class="meta">{{ poll.options | map(attribute='votes') | sum }} votes · {{ poll.options | length }} options</span>
+    </a>
+  {% else %}
+    <p class="meta">No polls yet — create the first one.</p>
+  {% endfor %}
+</section>
+{% endblock %}

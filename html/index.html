@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- Static deploy: serve this folder as-is. No build step, no dependencies. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Todo · Plain HTML</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <header class="top">
+        <h1>Todo</h1>
+        <p class="meta">Plain HTML · CSS · JS — state persists in localStorage</p>
+      </header>
+
+      <form id="add-form" class="add">
+        <input id="new-todo" placeholder="What needs doing?" maxlength="120" autocomplete="off" required />
+        <button type="submit">Add</button>
+      </form>
+
+      <nav class="filters" id="filters" aria-label="Filter todos">
+        <button type="button" data-filter="all" class="is-active">All</button>
+        <button type="button" data-filter="active">Active</button>
+        <button type="button" data-filter="done">Done</button>
+      </nav>
+
+      <ul id="list" class="list"></ul>
+
+      <footer class="foot">
+        <span id="count" class="meta">0 of 0 left</span>
+        <button id="clear-done" class="link" type="button">Clear done</button>
+      </footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

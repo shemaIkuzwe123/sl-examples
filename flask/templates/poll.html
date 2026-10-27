@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}{{ poll.question }} · Polls · Flask{% endblock %}
+
+{% block content %}
+{% set total = poll.options | map(attribute='votes') | sum %}
+
+<section class="card">
+  <header class="poll-head">
+    <h2>{{ poll.question }}</h2>
+    <form method="post" action="{{ url_for('delete_poll', poll_id=poll.id) }}">
+      <button type="submit" class="link-danger">Delete</button>
+    </form>
+  </header>
+
+  {% if voted is none %}
+    <form method="post" action="{{ url_for('vote', poll_id=poll.id) }}" class="stack">
+      {% for option in poll.options %}
+        <label class="option">
+          <input type="radio" name="option" value="{{ loop.index0 }}" required />
+          {{ option.label }}
+        </label>
+      {% endfor %}
+      <button type="submit">Vote</button>
+    </form>
+  {% else %}
+    <p class="meta">You voted for “{{ poll.options[voted].label }}”. One vote per browser.</p>
+  {% endif %}
+
+  <h3>Results</h3>
+  <div class="results">
+    {% for option in poll.options %}
+      {% set pct = (option.votes * 100 / total) | round | int if total else 0 %}
+      <div class="result">
+        <div class="result-label">
+          <span>{{ option.label }}</span>
+          <span class="meta">{{ option.votes }} · {{ pct }}%</span>
+        </div>
+        <div class="bar">
+          <div class="bar-fill" style="width: {{ pct }}%"></div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <p class="meta">{{ total }} {{ 'vote' if total == 1 else 'votes' }} total</p>
+</section>
+
+<a class="back" href="{{ url_for('index') }}">← All polls</a>
+{% endblock %}
